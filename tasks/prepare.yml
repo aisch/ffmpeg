@@ -1,5 +1,8 @@
+---
+
 - name: apt-get update
   apt: update_cache=yes cache_valid_time=3600
+  sudo: yes
 
 - name: install dependencies
   action: apt pkg={{ item }} state=present
@@ -23,6 +26,10 @@
     - texi2html 
     - zlib1g-dev
     - libmp3lame-dev
+  sudo: yes
 
 - name: make source folder
-  file: dest={{ ffmpeg_source_dir }}/ffmpeg_source state=directory
+  file: dest={{ ffmpeg_source_dir }} state=directory
+
+- name: make build folder
+  file: dest={{ ffmpeg_build_dir }} state=directory

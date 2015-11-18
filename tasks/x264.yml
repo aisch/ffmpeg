@@ -1,11 +1,17 @@
+---
+
 - name: clone latest x264
-  git: repo=git://git.videolan.org/x264.git accept_hostkey=true dest={{ ffmpeg_source_dir }}/x264
+  git: >
+    repo=git://git.videolan.org/x264.git
+    accept_hostkey=true
+    dest={{ ffmpeg_source_dir }}/x264
+    version={{ ffmpeg_x264_version }}
 
 - name: compile x264
   environment: ffmpeg_env
   shell: 'cd {{ ffmpeg_source_dir }}/x264; {{ item }} creates={{ ffmpeg_bin_dir }}/x264'
   with_items:
-    - ./configure --prefix={{ ffmpeg_build }} --bindir={{ ffmpeg_bin_dir }} --enable-static
-    - make
+    - ./configure --prefix={{ ffmpeg_build_dir }}{{ " --bindir=" + ffmpeg_install_dir + ffmpeg_bin_dir if ffmpeg_x264_bin else "" }} --enable-static
+    - make -j {{ ffmpeg_make_jobs }}
     - make install
-    - make distclean
+    - "{{ 'make distclean' if ffmpeg_clean else '' }}"

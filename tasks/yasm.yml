@@ -1,11 +1,17 @@
+---
+
 - name: clone latest yasm
-  git: repo=git://github.com/yasm/yasm.git accept_hostkey=true dest={{ ffmpeg_source_dir }}/yasm
+  git: >
+    repo=git://github.com/yasm/yasm.git
+    accept_hostkey=true
+    dest={{ ffmpeg_source_dir }}/yasm
+    version={{ ffmpeg_yasm_version }}
 
 - name: compile yasm 
   shell: 'cd {{ ffmpeg_source_dir }}/yasm; {{ item }} creates={{ ffmpeg_bin_dir }}/yasm'
   with_items:
     - ./autogen.sh
-    - ./configure --prefix={{ ffmpeg_build }} --bindir={{ ffmpeg_bin_dir }}
-    - make
+    - ./configure --prefix={{ ffmpeg_build_dir }}{{ " --bindir=" + ffmpeg_install_dir + ffmpeg_bin_dir if ffmpeg_yasm_bin else "" }}
+    - make -j {{ ffmpeg_make_jobs }}
     - make install
-    - make distclean
+    - "{{ 'make distclean' if ffmpeg_clean else '' }}"

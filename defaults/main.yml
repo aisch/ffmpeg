@@ -1,6 +1,40 @@
-ffmpeg_source_dir: "/usr/local/src"
-ffmpeg_build: "/usr/local/ffmpeg_build"
-ffmpeg_bin_dir: "/usr/local/bin"
+# locations
+ffmpeg_source_dir: /usr/local/ffmpeg_souces
+ffmpeg_build_dir: /usr/local/ffmpeg_build
+ffmpeg_prefix_dir: /usr/local
+ffmpeg_bin_dir: "{{ ffmpeg_prefix_dir }}/bin"
+ffmpeg_install_dir: ""
+
 ffmpeg_env: 
-  PKG_CONFIG_PATH: "{{ ffmpeg_build }}/lib/pkgconfig"
-ffmpeg_flags: "--extra-cflags=\"-I{{ ffmpeg_build }}/include\" --extra-ldflags=\"-L{{ ffmpeg_build }}/lib\" --bindir=\"{{ ffmpeg_bin_dir}}\" --extra-libs=-ldl --enable-gpl --enable-libass --enable-libfdk-aac --enable-libmp3lame --enable-libopus --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libspeex --enable-nonfree"
+  PKG_CONFIG_PATH: "{{ ffmpeg_build_dir }}/lib/pkgconfig"
+ffmpeg_flags: >-
+  --extra-cflags=\"-I{{ ffmpeg_build_dir }}/include\"
+  --extra-ldflags=\"-L{{ ffmpeg_build_dir }}/lib\"
+  --prefix=\"{{ ffmpeg_prefix_dir }}\"
+  --bindir=\"{{ ffmpeg_bin_dir }}\"
+  --extra-libs=-ldl
+  --enable-gpl
+  --enable-libass
+  --enable-libfdk-aac
+  --enable-libmp3lame
+  --enable-libopus
+  --enable-libtheora
+  --enable-libvorbis
+  --enable-libvpx
+  --enable-libx264
+  --enable-libspeex
+  --enable-nonfree
+
+ffmpeg_version: HEAD  # e.g. "release/2.7"
+ffmpeg_fdk_aac_version: HEAD
+ffmpeg_opus_version: HEAD
+ffmpeg_speex_version: HEAD
+ffmpeg_x264_version: HEAD
+ffmpeg_vpx_version: HEAD
+ffmpeg_yasm_version: HEAD
+
+ffmpeg_x264_bin: yes
+ffmpeg_yasm_bin: yes
+
+ffmpeg_make_jobs: 1
+ffmpeg_clean: yes

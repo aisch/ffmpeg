@@ -1,11 +1,17 @@
-- name: clone latest opus
-  git: repo=https://git.xiph.org/opus.git accept_hostkey=true dest={{ ffmpeg_source_dir }}/opus
+---
+
+- name: clone opus
+  git: >
+    repo=https://git.xiph.org/opus.git
+    accept_hostkey=true
+    dest={{ ffmpeg_source_dir }}/opus
+    version={{ ffmpeg_opus_version }}
 
 - name: compile libopus
-  shell: 'cd {{ ffmpeg_source_dir }}/opus; {{ item }} creates={{ ffmpeg_build }}/lib/libopus.a'
+  shell: 'cd {{ ffmpeg_source_dir }}/opus; {{ item }} creates={{ ffmpeg_build_dir }}/lib/libopus.a'
   with_items:
     - ./autogen.sh
-    - ./configure --prefix={{ ffmpeg_build }} --disable-shared
-    - make
+    - ./configure --prefix={{ ffmpeg_build_dir }} --disable-shared
+    - make -j {{ ffmpeg_make_jobs }}
     - make install
-    - make distclean
+    - "{{ 'make distclean' if ffmpeg_clean else '' }}"
