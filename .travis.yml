@@ -1,0 +1,17 @@
+---
+
+language: python
+python: "2.7"
+
+before_install:
+- sudo apt-get update -qq
+
+install:
+- pip install ansible
+- "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+
+script:
+# syntax check
+- "ansible-playbook -i localhost, test.yml --syntax-check"
+# run role
+- "ansible-playbook -i localhost, test.yml --connection=local --sudo"
