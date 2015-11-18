@@ -7,7 +7,7 @@ ffmpeg_install_dir: ""
 
 ffmpeg_env: 
   PKG_CONFIG_PATH: "{{ ffmpeg_build_dir }}/lib/pkgconfig"
-  PATH: "$PATH:{{ ffmpeg_build_dir }}/bin"
+  PATH: "{{ ansible_env.PATH }}:{{ ffmpeg_build_dir }}/bin"
 ffmpeg_flags: >-
   --extra-cflags=\"-I{{ ffmpeg_build_dir }}/include\"
   --extra-ldflags=\"-L{{ ffmpeg_build_dir }}/lib\"
